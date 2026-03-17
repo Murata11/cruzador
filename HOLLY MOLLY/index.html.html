@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cruzadinha - Fonemas</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:#f4f7fa;
+padding:20px;
+}
+
+table{
+margin:30px auto;
+border-collapse:collapse;
+}
+
+td{
+width:50px;
+height:50px;
+border:1px solid #999;
+position:relative;
+}
+
+.black{
+background:#1a3c5e;
+}
+
+input{
+width:100%;
+height:100%;
+text-align:center;
+font-size:26px;
+border:none;
+text-transform:uppercase;
+outline:none;
+}
+
+.number{
+position:absolute;
+top:3px;
+left:5px;
+font-size:12px;
+color:red;
+}
+
+button{
+padding:12px 30px;
+font-size:18px;
+background:#2f855a;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+#message{
+margin-top:20px;
+font-size:22px;
+font-weight:bold;
+}
+
+.clues{
+max-width:700px;
+margin:auto;
+text-align:left;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🧩 Cruzadinha – Fonemas</h1>
+
+<div class="clues">
+
+<h3>Horizontais</h3>
+
+1. Menor unidade sonora da língua (6)  
+3. Encontro vocálico de vogal + semivogal (7)  
+5. Fonema sonoro sem obstáculo na passagem do ar (5)
+
+<h3>Verticais</h3>
+
+2. Tipo de fonema com som nasal (5)  
+7. Encontro de duas vogais em sílabas diferentes (5)
+
+</div>
+
+<table id="crossword"></table>
+
+<button onclick="check()">Verificar respostas</button>
+
+<div id="message"></div>
+
+<script>
+
+const ROWS = 8
+const COLS = 9
+
+const grid = [
+
+['F','O','N','E','M','A','#','#','#'],  //1 FONEMA
+['#','#','A','#','#','#','#','#','#'],
+['#','#','S','#','#','#','#','#','#'],
+['#','#','A','#','#','#','#','#','#'],
+['#','#','L','#','V','O','G','A','L'],  //5 VOGAL
+['#','#','#','#','#','#','#','#','#'],
+['D','I','T','O','N','G','O','#','#'],  //3 DITONGO
+['#','#','#','#','#','#','#','#','#']
+
+]
+
+function create(){
+
+const table=document.getElementById("crossword")
+
+for(let r=0;r<ROWS;r++){
+
+const tr=document.createElement("tr")
+
+for(let c=0;c<COLS;c++){
+
+const td=document.createElement("td")
+
+if(grid[r][c]=="#"){
+
+td.classList.add("black")
+
+}else{
+
+const input=document.createElement("input")
+
+input.maxLength=1
+input.dataset.row=r
+input.dataset.col=c
+
+input.addEventListener("input",()=>{
+input.value=input.value.toUpperCase()
+})
+
+td.appendChild(input)
+
+}
+
+let num=null
+
+if(r==0 && c==0) num=1
+if(r==0 && c==2) num=2
+if(r==6 && c==0) num=3
+if(r==4 && c==4) num=5
+
+if(num){
+
+const span=document.createElement("span")
+span.classList.add("number")
+span.textContent=num
+
+td.appendChild(span)
+
+}
+
+tr.appendChild(td)
+
+}
+
+table.appendChild(tr)
+
+}
+
+}
+
+function check(){
+
+const inputs=document.querySelectorAll("input")
+
+let correct=0
+let total=0
+
+inputs.forEach(input=>{
+
+const r=input.dataset.row
+const c=input.dataset.col
+
+const letter=grid[r][c]
+
+total++
+
+if(input.value==letter){
+
+input.style.background="#c6f6d5"
+correct++
+
+}else{
+
+input.style.background="#fed7d7"
+
+}
+
+})
+
+const msg=document.getElementById("message")
+
+if(correct==total){
+
+msg.innerHTML="🎉 Parabéns! Cruzadinha correta!"
+msg.style.color="green"
+
+}else{
+
+msg.innerHTML="Você acertou "+correct+" de "+total+" letras."
+msg.style.color="red"
+
+}
+
+}
+
+create()
+
+</script>
+
+</body>
+</html>
